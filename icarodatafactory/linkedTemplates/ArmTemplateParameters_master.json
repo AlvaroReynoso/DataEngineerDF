@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "icarodatafactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"clase5_ejemplo_password": {
+			"value": ""
+		},
+		"clase5_ejemplo_properties_typeProperties_server": {
+			"value": "mi-servidor-sql-bocha.database.windows.net"
+		},
+		"clase5_ejemplo_properties_typeProperties_database": {
+			"value": "miBaseDeDatos"
+		},
+		"clase5_ejemplo_properties_typeProperties_userName": {
+			"value": "usuarioazure"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
