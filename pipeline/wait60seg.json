@@ -1,6 +1,17 @@
 {
 	"name": "wait60seg",
 	"properties": {
+		"activities": [
+			{
+				"name": "Wait120",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 120
+				}
+			}
+		],
 		"folder": {
 			"name": "triggers_prueba"
 		},
