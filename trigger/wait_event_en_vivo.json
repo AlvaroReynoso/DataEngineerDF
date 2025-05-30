@@ -2,7 +2,7 @@
 	"name": "wait_event_en_vivo",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
