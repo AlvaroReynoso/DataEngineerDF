@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "espera_60seg",
+				"name": "wait_event",
 				"type": "Wait",
 				"dependsOn": [],
 				"userProperties": [],
