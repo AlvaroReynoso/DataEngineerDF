@@ -1,0 +1,20 @@
+{
+	"name": "wait60seg",
+	"properties": {
+		"activities": [
+			{
+				"name": "espera_60seg",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 30
+				}
+			}
+		],
+		"folder": {
+			"name": "triggers_prueba"
+		},
+		"annotations": []
+	}
+}
