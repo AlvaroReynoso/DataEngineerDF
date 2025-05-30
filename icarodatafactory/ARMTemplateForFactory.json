@@ -33,114 +33,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/clase5_ejemplo')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('clase5_ejemplo_properties_typeProperties_server')]",
-					"database": "[parameters('clase5_ejemplo_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('clase5_ejemplo_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('clase5_ejemplo_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "clase5_ejemplo",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "ejercicioBikes"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "web-scraper-order",
-						"type": "varchar"
-					},
-					{
-						"name": "web-scraper-start-url",
-						"type": "varchar"
-					},
-					{
-						"name": "Links",
-						"type": "varchar"
-					},
-					{
-						"name": "Links-href",
-						"type": "varchar"
-					},
-					{
-						"name": "Name",
-						"type": "varchar"
-					},
-					{
-						"name": "Engine",
-						"type": "varchar"
-					},
-					{
-						"name": "Mileage",
-						"type": "varchar"
-					},
-					{
-						"name": "Transmission",
-						"type": "varchar"
-					},
-					{
-						"name": "Fuel Tank Capacity",
-						"type": "varchar"
-					},
-					{
-						"name": "Weight",
-						"type": "varchar"
-					},
-					{
-						"name": "Seat Height",
-						"type": "varchar"
-					},
-					{
-						"name": "Price",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Clase5_demo"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/clase5_ejemplo')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_ejercicio_bikes')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -361,6 +253,79 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "clase5_ejemplo",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ejercicioBikes"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "web-scraper-order",
+						"type": "varchar"
+					},
+					{
+						"name": "web-scraper-start-url",
+						"type": "varchar"
+					},
+					{
+						"name": "Links",
+						"type": "varchar"
+					},
+					{
+						"name": "Links-href",
+						"type": "varchar"
+					},
+					{
+						"name": "Name",
+						"type": "varchar"
+					},
+					{
+						"name": "Engine",
+						"type": "varchar"
+					},
+					{
+						"name": "Mileage",
+						"type": "varchar"
+					},
+					{
+						"name": "Transmission",
+						"type": "varchar"
+					},
+					{
+						"name": "Fuel Tank Capacity",
+						"type": "varchar"
+					},
+					{
+						"name": "Weight",
+						"type": "varchar"
+					},
+					{
+						"name": "Seat Height",
+						"type": "varchar"
+					},
+					{
+						"name": "Price",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Clase5_demo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/clase5_ejemplo')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ejercicio_bikes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -439,6 +404,61 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/clase5_ejemplo')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('clase5_ejemplo_properties_typeProperties_server')]",
+					"database": "[parameters('clase5_ejemplo_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('clase5_ejemplo_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('clase5_ejemplo_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_clase5_en_vivo')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 3,
+						"startTime": "2025-05-30T13:09:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
