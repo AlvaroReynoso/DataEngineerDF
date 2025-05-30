@@ -452,7 +452,7 @@
 						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
-							"waitTimeInSeconds": 30
+							"waitTimeInSeconds": 60
 						}
 					}
 				],
@@ -472,7 +472,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -486,8 +486,8 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 5,
-						"startTime": "2025-05-30T13:14:00",
+						"interval": 1,
+						"startTime": "2025-05-30T13:41:00",
 						"timeZone": "Argentina Standard Time"
 					}
 				}
