@@ -27,7 +27,7 @@
 			"type": "string",
 			"defaultValue": "usuarioazure"
 		},
-		"wait_event_en_vivo_properties_typeProperties_scope": {
+		"event_trigger_on_120s_wait_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		}
@@ -78,12 +78,12 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "wait_event",
+						"name": "Wait120",
 						"type": "Wait",
 						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
-							"waitTimeInSeconds": 60
+							"waitTimeInSeconds": 120
 						}
 					}
 				],
@@ -251,7 +251,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/wait_event_en_vivo')]",
+			"name": "[concat(parameters('factoryName'), '/event_trigger_on_120s_wait')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -271,7 +271,7 @@
 					"blobPathBeginsWith": "/users/blobs/",
 					"blobPathEndsWith": ".csv",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('wait_event_en_vivo_properties_typeProperties_scope')]",
+					"scope": "[parameters('event_trigger_on_120s_wait_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]

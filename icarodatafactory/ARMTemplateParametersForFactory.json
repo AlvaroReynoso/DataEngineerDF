@@ -20,7 +20,7 @@
 		"clase5_ejemplo_properties_typeProperties_userName": {
 			"value": "usuarioazure"
 		},
-		"wait_event_en_vivo_properties_typeProperties_scope": {
+		"event_trigger_on_120s_wait_properties_typeProperties_scope": {
 			"value": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		}
 	}
