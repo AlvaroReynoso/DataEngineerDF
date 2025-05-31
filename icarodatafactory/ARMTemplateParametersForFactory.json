@@ -8,8 +8,17 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"RestService1_password": {
+			"value": ""
+		},
 		"clase5_ejemplo_password": {
 			"value": ""
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
+		},
+		"RestService1_properties_typeProperties_userName": {
+			"value": "usuarioazure"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"value": "mi-servidor-sql-bocha.database.windows.net"
@@ -19,9 +28,6 @@
 		},
 		"clase5_ejemplo_properties_typeProperties_userName": {
 			"value": "usuarioazure"
-		},
-		"event_trigger_on_120s_wait_properties_typeProperties_scope": {
-			"value": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		}
 	}
 }

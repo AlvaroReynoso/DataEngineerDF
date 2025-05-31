@@ -11,9 +11,21 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage1\""
 		},
+		"RestService1_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"RestService1\""
+		},
 		"clase5_ejemplo_password": {
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"clase5_ejemplo\""
+		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
+		},
+		"RestService1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"type": "string",
@@ -26,10 +38,6 @@
 		"clase5_ejemplo_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "usuarioazure"
-		},
-		"event_trigger_on_120s_wait_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
 		"containerUri": {
 			"type": "string",
@@ -61,8 +69,17 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
+					"RestService1_password": {
+						"value": "[parameters('RestService1_password')]"
+					},
 					"clase5_ejemplo_password": {
 						"value": "[parameters('clase5_ejemplo_password')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"RestService1_properties_typeProperties_userName": {
+						"value": "[parameters('RestService1_properties_typeProperties_userName')]"
 					},
 					"clase5_ejemplo_properties_typeProperties_server": {
 						"value": "[parameters('clase5_ejemplo_properties_typeProperties_server')]"
@@ -72,9 +89,6 @@
 					},
 					"clase5_ejemplo_properties_typeProperties_userName": {
 						"value": "[parameters('clase5_ejemplo_properties_typeProperties_userName')]"
-					},
-					"event_trigger_on_120s_wait_properties_typeProperties_scope": {
-						"value": "[parameters('event_trigger_on_120s_wait_properties_typeProperties_scope')]"
 					}
 				}
 			},
