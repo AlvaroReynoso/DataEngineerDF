@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "pokemon_lookup_sql",
+					"referenceName": "pokemon_lookup_sql_2",
 					"type": "PipelineReference"
 				}
 			}
