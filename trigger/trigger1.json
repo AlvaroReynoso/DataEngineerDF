@@ -15,9 +15,9 @@
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Minute",
-				"interval": 3,
-				"startTime": "2025-05-31T20:12:00",
-				"endTime": "2025-05-31T20:15:00",
+				"interval": 1,
+				"startTime": "2025-05-31T20:21:00",
+				"endTime": "2025-05-31T20:22:00",
 				"timeZone": "Argentina Standard Time"
 			}
 		}
