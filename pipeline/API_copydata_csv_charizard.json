@@ -1,0 +1,161 @@
+{
+	"name": "API_copydata_csv_charizard",
+	"properties": {
+		"activities": [
+			{
+				"name": "copydata_charizard_csv",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "APIPokemon_Get_charizard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['ability']['name']"
+								},
+								"sink": {
+									"name": "abilityName"
+								}
+							},
+							{
+								"source": {
+									"path": "['ability']['url']"
+								},
+								"sink": {
+									"name": "urlAbility"
+								}
+							},
+							{
+								"source": {
+									"path": "['is_hidden']"
+								},
+								"sink": {
+									"name": "isHidden"
+								}
+							},
+							{
+								"source": {
+									"path": "['slot']"
+								},
+								"sink": {
+									"name": "slot"
+								}
+							},
+							{
+								"source": {
+									"path": "$['forms'][0]['name']"
+								},
+								"sink": {
+									"name": "Name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['forms'][0]['url']"
+								},
+								"sink": {
+									"name": "Url"
+								}
+							},
+							{
+								"source": {
+									"path": "$['types'][0]['slot']"
+								},
+								"sink": {
+									"name": "tipos"
+								}
+							},
+							{
+								"source": {
+									"path": "$['types'][0]['type']['name']"
+								},
+								"sink": {
+									"name": "nombreTipo"
+								}
+							},
+							{
+								"source": {
+									"path": "$['types'][0]['type']['url']"
+								},
+								"sink": {
+									"name": "UrlNombreTipo"
+								}
+							}
+						],
+						"collectionReference": "$['abilities']"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "APIREST_get_charizard",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "pokemons_csv_10",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "APIPokemon_Get_charizard",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": "https://pokeapi.co/api/v2/pokemon/charizard"
+				}
+			}
+		],
+		"folder": {
+			"name": "pokemon_ejercicio"
+		},
+		"annotations": []
+	}
+}

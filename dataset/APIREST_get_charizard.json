@@ -1,0 +1,12 @@
+{
+	"name": "APIREST_get_charizard",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "REST_charizard",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
