@@ -5,14 +5,7 @@
 			{
 				"name": "copydata_API_to_CSV",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Wait1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -226,15 +219,6 @@
 						"referenceName": "sql_dataset_look_up",
 						"type": "DatasetReference"
 					}
-				}
-			},
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 15
 				}
 			}
 		],
