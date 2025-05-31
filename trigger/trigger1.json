@@ -2,23 +2,17 @@
 	"name": "trigger1",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "pokemon_lookup_sql",
-					"type": "PipelineReference"
-				}
-			}
-		],
-		"type": "ScheduleTrigger",
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"recurrence": {
-				"frequency": "Minute",
-				"interval": 3,
-				"startTime": "2025-05-31T20:37:00",
-				"timeZone": "Argentina Standard Time"
-			}
+			"blobPathBeginsWith": "/pokemons/blobs/CSV_pokemons",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
 		}
 	}
 }
