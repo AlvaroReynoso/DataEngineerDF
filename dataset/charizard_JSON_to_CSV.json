@@ -1,0 +1,45 @@
+{
+	"name": "charizard_JSON_to_CSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "JSON_data_Charizard",
+				"folderPath": "JSON_pokemons/Charizard",
+				"container": "pokemons"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"nombreHabilidad": {
+					"type": "string"
+				},
+				"Nombre": {
+					"type": "string"
+				},
+				"UrlNombre": {
+					"type": "string"
+				},
+				"Altura": {
+					"type": "integer"
+				},
+				"NombreMovimiento": {
+					"type": "string"
+				},
+				"NombreTipo": {
+					"type": "string"
+				},
+				"Peso": {
+					"type": "integer"
+				}
+			}
+		}
+	}
+}
