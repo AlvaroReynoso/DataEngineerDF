@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"clase5_ejemplo\""
 		},
+		"REST_charizard_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://pokeapi.co/api/v2/pokemon/charizard"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
@@ -63,6 +67,9 @@
 					},
 					"clase5_ejemplo_password": {
 						"value": "[parameters('clase5_ejemplo_password')]"
+					},
+					"REST_charizard_properties_typeProperties_url": {
+						"value": "[parameters('REST_charizard_properties_typeProperties_url')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"

@@ -11,6 +11,9 @@
 		"clase5_ejemplo_password": {
 			"value": ""
 		},
+		"REST_charizard_properties_typeProperties_url": {
+			"value": "https://pokeapi.co/api/v2/pokemon/charizard"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
 		},
