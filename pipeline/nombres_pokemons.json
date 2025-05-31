@@ -1,10 +1,10 @@
 {
-	"name": "pokemonAPI_ejercicio",
+	"name": "nombres_pokemons",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "Web1",
+				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -15,64 +15,67 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"paginationRules": {
-							"supportRFC5988": "true"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".csv"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['results'][0]['name']"
-								},
-								"sink": {
-									"name": "name"
-								}
-							},
-							{
-								"source": {
-									"path": "$['results'][0]['url']"
-								},
-								"sink": {
-									"name": "url"
-								}
-							}
+					"method": "GET",
+					"url": "https://pokeapi.co/api/v2/pokemon/ditto"
+				}
+			},
+			{
+				"name": "nombre_ditto",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
 				},
-				"inputs": [
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "nombres",
+					"value": {
+						"value": "@activity('Web1').output.forms[0].name",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "moves_ditto",
+				"type": "SetVariable",
+				"dependsOn": [
 					{
-						"referenceName": "RestResource1",
-						"type": "DatasetReference"
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"outputs": [
-					{
-						"referenceName": "pokemons_csv_10",
-						"type": "DatasetReference"
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "movimiento",
+					"value": {
+						"value": "@activity('Web1').output.moves[0].move.name",
+						"type": "Expression"
 					}
-				]
+				}
 			}
 		],
+		"variables": {
+			"nombres": {
+				"type": "String"
+			},
+			"movimiento": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "pokemon_ejercicio"
 		},
