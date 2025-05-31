@@ -1,5 +1,5 @@
 {
-	"name": "Pokemon_20",
+	"name": "Pokemon_10",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "RestService1",
@@ -11,7 +11,7 @@
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "pokemon?limit=20"
+			"relativeUrl": "pokemon?limit=10"
 		},
 		"schema": []
 	}
