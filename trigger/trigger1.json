@@ -3,11 +3,17 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pokemon_lookup_sql",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/pokemons/blobs/CSV_pokemons",
-			"blobPathEndsWith": ".csv",
+			"blobPathBeginsWith": "/pokemons/blobs/CSV_pokemons/",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace",
 			"events": [
