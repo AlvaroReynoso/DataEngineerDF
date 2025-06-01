@@ -2,7 +2,7 @@
 	"name": "trigger1_schedule",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
@@ -16,7 +16,7 @@
 			"recurrence": {
 				"frequency": "Minute",
 				"interval": 1,
-				"startTime": "2025-05-31T23:18:00",
+				"startTime": "2025-05-31T23:16:00",
 				"endTime": "2025-05-31T23:22:00",
 				"timeZone": "Argentina Standard Time"
 			}
