@@ -47,7 +47,7 @@
 			"type": "string",
 			"defaultValue": "usuarioazure"
 		},
-		"trigger1_schedule_pok_properties_typeProperties_scope": {
+		"trigger1_event_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
@@ -126,8 +126,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"trigger1_schedule_pok_properties_typeProperties_scope": {
-						"value": "[parameters('trigger1_schedule_pok_properties_typeProperties_scope')]"
+					"trigger1_event_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1_event_properties_typeProperties_scope')]"
 					}
 				}
 			},

@@ -35,7 +35,7 @@
 		"sql_dataset_look_up_properties_typeProperties_userName": {
 			"value": "usuarioazure"
 		},
-		"trigger1_schedule_pok_properties_typeProperties_scope": {
+		"trigger1_event_properties_typeProperties_scope": {
 			"value": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
 		"containerUri": {
