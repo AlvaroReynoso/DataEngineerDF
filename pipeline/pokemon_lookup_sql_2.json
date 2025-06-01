@@ -84,7 +84,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "pokmeons_csv_to_sql",
+						"referenceName": "pokemons_10_csv_lookup",
 						"type": "DatasetReference"
 					}
 				],
