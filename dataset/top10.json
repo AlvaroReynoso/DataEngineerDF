@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "top10",
 				"folderPath": "lookup_pokemons",
 				"container": "pokemons"
 			},
