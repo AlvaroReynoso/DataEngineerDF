@@ -911,7 +911,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pokemon_schedule')]",
+			"name": "[concat(parameters('factoryName'), '/trigger1_schedule')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -930,8 +930,8 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 2,
-						"startTime": "2025-06-01T00:26:00",
+						"interval": 1,
+						"startTime": "2025-05-31T21:30:00",
 						"timeZone": "Argentina Standard Time"
 					}
 				}
