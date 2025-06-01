@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "copydata_csv_to_sql",
+				"name": "cargar_tabla_sql",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -84,7 +84,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "top10",
+						"referenceName": "pokemons_csv_origen",
 						"type": "DatasetReference"
 					}
 				],
@@ -96,12 +96,12 @@
 				]
 			},
 			{
-				"name": "Lookup_sql",
+				"name": "COUNT pokemons",
 				"description": "",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "copydata_csv_to_sql",
+						"activity": "cargar_tabla_sql",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -119,7 +119,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": "SELECT nombre_pokemon FROM dbo.pokemons_10",
-						"queryTimeout": "00:15:00",
+						"queryTimeout": "00:20:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
