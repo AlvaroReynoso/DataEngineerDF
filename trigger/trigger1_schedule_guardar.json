@@ -2,7 +2,7 @@
 	"name": "trigger1_schedule_guardar",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
