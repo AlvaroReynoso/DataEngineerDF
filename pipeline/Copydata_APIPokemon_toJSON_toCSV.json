@@ -106,7 +106,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "APIREST_get_charizard",
+						"referenceName": "charizard_get",
 						"type": "DatasetReference"
 					}
 				],
