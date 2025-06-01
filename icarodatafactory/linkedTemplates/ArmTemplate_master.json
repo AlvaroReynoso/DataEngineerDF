@@ -47,10 +47,6 @@
 			"type": "string",
 			"defaultValue": "usuarioazure"
 		},
-		"trigger1_event_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
@@ -125,9 +121,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"trigger1_event_properties_typeProperties_scope": {
-						"value": "[parameters('trigger1_event_properties_typeProperties_scope')]"
 					}
 				}
 			},
