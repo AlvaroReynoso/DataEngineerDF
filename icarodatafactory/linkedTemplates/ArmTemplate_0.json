@@ -615,7 +615,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "CSV_pokemons",
+						"folderPath": "lookup_pokemons",
 						"container": "pokemons"
 					},
 					"columnDelimiter": ",",
@@ -724,8 +724,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "pokemons_10_CSV_to_sql",
-						"folderPath": "CSV_pokemons",
+						"folderPath": "lookup_pokemons",
 						"container": "pokemons"
 					},
 					"columnDelimiter": ",",
@@ -782,34 +781,40 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/demo_trigger_6AM')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/top1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "wait60seg",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
+				"type": "DelimitedText",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2025-06-01T06:00:00",
-						"endTime": "2025-06-02T07:00:00",
-						"timeZone": "Argentina Standard Time"
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
 					}
-				}
+				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/wait60seg')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		}
 	]

@@ -6,12 +6,81 @@
 			"type": "string",
 			"metadata": "Nombre de instancia de Data Factory",
 			"defaultValue": "icarodatafactory"
+		},
+		"trigger1_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/top10')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "top10",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_trigger_6AM')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "wait60seg",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-06-01T06:00:00",
+						"endTime": "2025-06-02T07:00:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/API_copydata_pokemon_csv')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -660,7 +729,7 @@
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
 									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"fileExtension": ".csv"
 								}
 							},
 							"enableStaging": false,
@@ -712,7 +781,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "pokemons_10_csv_lookup",
+								"referenceName": "top10",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -727,7 +796,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/top10')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pokemon_lookup_sql_2')]",
@@ -817,7 +888,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "pokmeons_csv_to_sql",
+								"referenceName": "top10",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -873,7 +944,71 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/top10')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1_event')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pokemon_lookup_sql_2",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/pokemons/blobs/lookup_pokemons",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger1_event_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pokemon_lookup_sql_2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1_schedule')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pokemon_lookup_sql",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 1,
+						"startTime": "2025-05-31T23:18:00",
+						"endTime": "2025-05-31T23:22:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pokemon_lookup_sql')]"
+			]
 		}
 	]
 }

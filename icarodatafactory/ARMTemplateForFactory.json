@@ -46,6 +46,10 @@
 		"sql_dataset_look_up_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "usuarioazure"
+		},
+		"trigger1_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		}
 	},
 	"variables": {
@@ -801,7 +805,7 @@
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
 									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"fileExtension": ".csv"
 								}
 							},
 							"enableStaging": false,
@@ -853,7 +857,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "pokemons_10_csv_lookup",
+								"referenceName": "top10",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -870,7 +874,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Pokemon_10')]",
-				"[concat(variables('factoryId'), '/datasets/pokemons_10_csv_lookup')]",
+				"[concat(variables('factoryId'), '/datasets/top10')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
@@ -962,7 +966,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "pokmeons_csv_to_sql",
+								"referenceName": "top10",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1019,7 +1023,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/pokmeons_csv_to_sql')]",
+				"[concat(variables('factoryId'), '/datasets/top10')]",
 				"[concat(variables('factoryId'), '/datasets/sql_dataset_look_up')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
@@ -1423,7 +1427,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "CSV_pokemons",
+						"folderPath": "lookup_pokemons",
 						"container": "pokemons"
 					},
 					"columnDelimiter": ",",
@@ -1532,8 +1536,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "pokemons_10_CSV_to_sql",
-						"folderPath": "CSV_pokemons",
+						"folderPath": "lookup_pokemons",
 						"container": "pokemons"
 					},
 					"columnDelimiter": ",",
@@ -1587,6 +1590,81 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/sql_dataset_look_up')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/top1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/top10')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "top10",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
@@ -1691,6 +1769,68 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/wait60seg')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1_event')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pokemon_lookup_sql_2",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/pokemons/blobs/lookup_pokemons",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger1_event_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pokemon_lookup_sql_2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1_schedule')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pokemon_lookup_sql",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 1,
+						"startTime": "2025-05-31T23:18:00",
+						"endTime": "2025-05-31T23:22:00",
+						"timeZone": "Argentina Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pokemon_lookup_sql')]"
 			]
 		}
 	]
