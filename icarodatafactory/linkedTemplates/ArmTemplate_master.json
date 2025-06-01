@@ -15,13 +15,13 @@
 			"type": "secureString",
 			"metadata": "Cadena protegida para \"password\"de \"clase5_ejemplo\""
 		},
-		"REST_charizard_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://pokeapi.co/api/v2/pokemon/charizard"
+		"sql_dataset_look_up_password": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"password\"de \"sql_dataset_look_up\""
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0"
+			"defaultValue": "https://pokeapi.co/api/v2/"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"type": "string",
@@ -34,6 +34,22 @@
 		"clase5_ejemplo_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "usuarioazure"
+		},
+		"sql_dataset_look_up_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "mi-servidor-sql-bocha.database.windows.net"
+		},
+		"sql_dataset_look_up_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "miBaseDeDatos"
+		},
+		"sql_dataset_look_up_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
+		},
+		"trigger1_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
 		"containerUri": {
 			"type": "string",
@@ -68,8 +84,8 @@
 					"clase5_ejemplo_password": {
 						"value": "[parameters('clase5_ejemplo_password')]"
 					},
-					"REST_charizard_properties_typeProperties_url": {
-						"value": "[parameters('REST_charizard_properties_typeProperties_url')]"
+					"sql_dataset_look_up_password": {
+						"value": "[parameters('sql_dataset_look_up_password')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
@@ -82,10 +98,42 @@
 					},
 					"clase5_ejemplo_properties_typeProperties_userName": {
 						"value": "[parameters('clase5_ejemplo_properties_typeProperties_userName')]"
+					},
+					"sql_dataset_look_up_properties_typeProperties_server": {
+						"value": "[parameters('sql_dataset_look_up_properties_typeProperties_server')]"
+					},
+					"sql_dataset_look_up_properties_typeProperties_database": {
+						"value": "[parameters('sql_dataset_look_up_properties_typeProperties_database')]"
+					},
+					"sql_dataset_look_up_properties_typeProperties_userName": {
+						"value": "[parameters('sql_dataset_look_up_properties_typeProperties_userName')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "icarodatafactory_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"trigger1_event_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1_event_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'icarodatafactory_ArmTemplate_0')]"
+			]
 		}
 	]
 }
