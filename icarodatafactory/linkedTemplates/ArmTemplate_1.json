@@ -1051,7 +1051,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -1063,7 +1063,7 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/pokemons/blobs/lookup_pokemons/",
+					"blobPathBeginsWith": "/pokemons/blobs/lookup_pokemons",
 					"blobPathEndsWith": ".csv",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('trigger1_event_properties_typeProperties_scope')]",
@@ -1077,12 +1077,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1_schedule_guardar')]",
+			"name": "[concat(parameters('factoryName'), '/trigger1_sch')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -1097,8 +1097,8 @@
 					"recurrence": {
 						"frequency": "Minute",
 						"interval": 3,
-						"startTime": "2025-06-01T00:47:00",
-						"endTime": "2025-06-01T00:55:00",
+						"startTime": "2025-06-01T00:50:00",
+						"endTime": "2025-06-01T00:54:00",
 						"timeZone": "Argentina Standard Time"
 					}
 				}
