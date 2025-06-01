@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "pokemons_10_CSV_to_sql",
-				"folderPath": "CSV_pokemons",
+				"folderPath": "lookup_pokemons",
 				"container": "pokemons"
 			},
 			"columnDelimiter": ",",
