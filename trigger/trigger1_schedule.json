@@ -16,8 +16,8 @@
 			"recurrence": {
 				"frequency": "Minute",
 				"interval": 1,
-				"startTime": "2025-05-31T23:11:00",
-				"endTime": "2025-05-31T23:15:00",
+				"startTime": "2025-05-31T23:16:00",
+				"endTime": "2025-05-31T23:22:00",
 				"timeZone": "Argentina Standard Time"
 			}
 		}

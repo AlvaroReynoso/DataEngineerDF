@@ -83,7 +83,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "pokemons_10_csv_lookup",
+						"referenceName": "top10",
 						"type": "DatasetReference"
 					}
 				]
