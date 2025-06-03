@@ -4,20 +4,36 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Nombre de instancia de Data Factory",
+			"metadata": "Data Factory name",
 			"defaultValue": "icarodatafactory"
 		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage1\""
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"LS__SQL_SalesDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS__SQL_SalesDB'"
 		},
 		"clase5_ejemplo_password": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"clase5_ejemplo\""
+			"metadata": "Secure string for 'password' of 'clase5_ejemplo'"
 		},
 		"sql_dataset_look_up_password": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"sql_dataset_look_up\""
+			"metadata": "Secure string for 'password' of 'sql_dataset_look_up'"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "mi-servidor-sql-bocha.database.windows.net"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "miBaseDeDatos"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -139,7 +155,8 @@
 				"folder": {
 					"name": "pokemon_ejercicio"
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-05-31T18:40:59Z"
 			},
 			"dependsOn": []
 		},
@@ -165,7 +182,8 @@
 				"folder": {
 					"name": "triggers_prueba"
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2025-05-31T18:20:23Z"
 			},
 			"dependsOn": []
 		},
@@ -183,11 +201,33 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS__SQL_SalesDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('LS__SQL_SalesDB_properties_typeProperties_server')]",
+					"database": "[parameters('LS__SQL_SalesDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('LS__SQL_SalesDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS__SQL_SalesDB_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RestService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "Pokemon_APIREST_requests",
+				"description": "LS_Rest_PokeAPI",
 				"annotations": [],
 				"type": "RestService",
 				"typeProperties": {
@@ -241,6 +281,29 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/API_GET_CHARIZARD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestService1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "pokemons datasets"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "pokemon/charizard"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestService1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
@@ -316,6 +379,82 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_product_query_count')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS__SQL_SalesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DS_SQL_product_table"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS__SQL_SalesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SQL_products_insert')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS__SQL_SalesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DS_SQL_product_table"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS__SQL_SalesDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Pokemon_10')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -347,6 +486,9 @@
 					"referenceName": "RestService1",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "pokemons datasets"
+				},
 				"annotations": [],
 				"type": "RestResource",
 				"typeProperties": {
@@ -367,12 +509,15 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "pokemons datasets"
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "JSON_data_Charizard",
+						"fileName": "data_231d09f7-9dd0-4381-a973-115af4552042_3fd29e47-b41b-4037-8b78-ff506dba7c8d.json",
 						"folderPath": "JSON_pokemons/Charizard",
 						"container": "pokemons"
 					}
@@ -417,6 +562,9 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "pokemons datasets"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -457,6 +605,46 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_pokemons')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "pokemons datasets"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/csv_tabla_poke_10')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -464,6 +652,9 @@
 				"linkedServiceName": {
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "pokemons datasets"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -565,7 +756,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pokemons_10_csv')]",
+			"name": "[concat(parameters('factoryName'), '/json_no_esquema')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -574,244 +765,15 @@
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "CSV_pokemons",
+						"folderPath": "JSON_pokemons/Charizard",
 						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "url",
-						"type": "String"
 					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pokemons_10_csv_lookup')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "lookup_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pokemons_csv_10')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "pokemons_ejercicio",
-						"container": "users"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "Date",
-						"type": "String"
-					},
-					{
-						"name": "Time",
-						"type": "String"
-					},
-					{
-						"name": "Location",
-						"type": "String"
-					},
-					{
-						"name": "Operator",
-						"type": "String"
-					},
-					{
-						"name": "Flight #",
-						"type": "String"
-					},
-					{
-						"name": "Route",
-						"type": "String"
-					},
-					{
-						"name": "Type",
-						"type": "String"
-					},
-					{
-						"name": "Registration",
-						"type": "String"
-					},
-					{
-						"name": "cn/In",
-						"type": "String"
-					},
-					{
-						"name": "Aboard",
-						"type": "String"
-					},
-					{
-						"name": "Fatalities",
-						"type": "String"
-					},
-					{
-						"name": "Ground",
-						"type": "String"
-					},
-					{
-						"name": "Summary",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pokmeons_csv_to_sql')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "lookup_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "url",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sql_dataset_look_up')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sql_dataset_look_up",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "sql_dataset_look_up"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "nombre_pokemon",
-						"type": "varchar"
-					},
-					{
-						"name": "url_pokemon",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "pokemons_10"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sql_dataset_look_up')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/top1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "lookup_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "url",
-						"type": "String"
-					}
-				]
+				"schema": {}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"

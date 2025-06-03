@@ -8,11 +8,23 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"LS__SQL_SalesDB_password": {
+			"value": ""
+		},
 		"clase5_ejemplo_password": {
 			"value": ""
 		},
 		"sql_dataset_look_up_password": {
 			"value": ""
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_server": {
+			"value": "mi-servidor-sql-bocha.database.windows.net"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_database": {
+			"value": "miBaseDeDatos"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_userName": {
+			"value": "usuarioazure"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://pokeapi.co/api/v2/"
@@ -35,7 +47,10 @@
 		"sql_dataset_look_up_properties_typeProperties_userName": {
 			"value": "usuarioazure"
 		},
-		"trigger1_event_properties_typeProperties_scope": {
+		"trigger2_event_properties_typeProperties_scope": {
+			"value": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
+		},
+		"trigger3_properties_typeProperties_scope": {
 			"value": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
 		"containerUri": {

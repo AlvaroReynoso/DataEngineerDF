@@ -4,20 +4,36 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Nombre de instancia de Data Factory",
+			"metadata": "Data Factory name",
 			"defaultValue": "icarodatafactory"
 		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage1\""
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"LS__SQL_SalesDB_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS__SQL_SalesDB'"
 		},
 		"clase5_ejemplo_password": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"clase5_ejemplo\""
+			"metadata": "Secure string for 'password' of 'clase5_ejemplo'"
 		},
 		"sql_dataset_look_up_password": {
 			"type": "secureString",
-			"metadata": "Cadena protegida para \"password\"de \"sql_dataset_look_up\""
+			"metadata": "Secure string for 'password' of 'sql_dataset_look_up'"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "mi-servidor-sql-bocha.database.windows.net"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "miBaseDeDatos"
+		},
+		"LS__SQL_SalesDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -47,17 +63,21 @@
 			"type": "string",
 			"defaultValue": "usuarioazure"
 		},
-		"trigger1_event_properties_typeProperties_scope": {
+		"trigger2_event_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
+		},
+		"trigger3_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2df53831-24ef-422f-b5bb-ed0257da6fb2/resourceGroups/miGrupoDeRecursos/providers/Microsoft.Storage/storageAccounts/myicaroworkspace"
 		},
 		"containerUri": {
 			"type": "string",
-			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
+			"metadata": "URI to storage account containing linked ARM templates"
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "Token de SAS para la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas"
+			"metadata": "Sas token to storage account containing linked ARM templates"
 		}
 	},
 	"variables": {
@@ -81,11 +101,23 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
+					"LS__SQL_SalesDB_password": {
+						"value": "[parameters('LS__SQL_SalesDB_password')]"
+					},
 					"clase5_ejemplo_password": {
 						"value": "[parameters('clase5_ejemplo_password')]"
 					},
 					"sql_dataset_look_up_password": {
 						"value": "[parameters('sql_dataset_look_up_password')]"
+					},
+					"LS__SQL_SalesDB_properties_typeProperties_server": {
+						"value": "[parameters('LS__SQL_SalesDB_properties_typeProperties_server')]"
+					},
+					"LS__SQL_SalesDB_properties_typeProperties_database": {
+						"value": "[parameters('LS__SQL_SalesDB_properties_typeProperties_database')]"
+					},
+					"LS__SQL_SalesDB_properties_typeProperties_userName": {
+						"value": "[parameters('LS__SQL_SalesDB_properties_typeProperties_userName')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
@@ -126,8 +158,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"trigger1_event_properties_typeProperties_scope": {
-						"value": "[parameters('trigger1_event_properties_typeProperties_scope')]"
+					"trigger2_event_properties_typeProperties_scope": {
+						"value": "[parameters('trigger2_event_properties_typeProperties_scope')]"
+					},
+					"trigger3_properties_typeProperties_scope": {
+						"value": "[parameters('trigger3_properties_typeProperties_scope')]"
 					}
 				}
 			},
