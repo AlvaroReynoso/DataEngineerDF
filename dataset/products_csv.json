@@ -1,73 +1,75 @@
 {
-	"name": "ejercicio_bikes",
+	"name": "products_csv",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "ejercicioBikes"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "bikes.csv",
-				"container": "users"
+				"folderPath": "CSV_products",
+				"container": "sqldata"
 			},
 			"columnDelimiter": ",",
+			"encodingName": "UTF-8",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
-				"name": "web-scraper-order",
+				"name": "Date",
 				"type": "String"
 			},
 			{
-				"name": "web-scraper-start-url",
+				"name": "Time",
 				"type": "String"
 			},
 			{
-				"name": "Links",
+				"name": "Location",
 				"type": "String"
 			},
 			{
-				"name": "Links-href",
+				"name": "Operator",
 				"type": "String"
 			},
 			{
-				"name": "Name",
+				"name": "Flight #",
 				"type": "String"
 			},
 			{
-				"name": "Engine",
+				"name": "Route",
 				"type": "String"
 			},
 			{
-				"name": "Mileage",
+				"name": "Type",
 				"type": "String"
 			},
 			{
-				"name": "Transmission",
+				"name": "Registration",
 				"type": "String"
 			},
 			{
-				"name": "Weight",
+				"name": "cn/In",
 				"type": "String"
 			},
 			{
-				"name": "Fuel Tank Capacity",
+				"name": "Aboard",
 				"type": "String"
 			},
 			{
-				"name": "Seat Height",
+				"name": "Fatalities",
 				"type": "String"
 			},
 			{
-				"name": "Price",
+				"name": "Ground",
+				"type": "String"
+			},
+			{
+				"name": "Summary",
 				"type": "String"
 			}
 		]

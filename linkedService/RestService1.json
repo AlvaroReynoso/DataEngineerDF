@@ -1,7 +1,8 @@
 {
 	"name": "RestService1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"description": "Pokemon_APIREST_requests",
+		"description": "LS_Rest_PokeAPI",
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
@@ -9,6 +10,5 @@
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+	}
 }

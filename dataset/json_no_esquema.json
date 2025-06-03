@@ -1,27 +1,20 @@
 {
-	"name": "csv_tabla_poke_10",
+	"name": "json_no_esquema",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "pokemons datasets"
-		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "CSV_pokemons",
+				"folderPath": "JSON_pokemons/Charizard",
 				"container": "pokemons"
-			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			}
 		},
-		"schema": []
+		"schema": {}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

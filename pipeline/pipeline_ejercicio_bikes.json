@@ -204,6 +204,8 @@
 		"folder": {
 			"name": "ejercicio_bikes"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2025-05-29T05:24:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

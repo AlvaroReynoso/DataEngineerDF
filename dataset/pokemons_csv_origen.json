@@ -5,12 +5,15 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "pokemons datasets"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "pokemons.csv",
+				"fileName": "data_5536826f-3677-4814-8683-85803d1f5e01_d16ce761-4078-47e7-9daa-a0ae24df3a0d.csv",
 				"folderPath": "lookup_pokemons",
 				"container": "pokemons"
 			},
@@ -29,5 +32,6 @@
 				"type": "String"
 			}
 		]
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

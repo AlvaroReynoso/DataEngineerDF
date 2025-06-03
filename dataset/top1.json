@@ -5,6 +5,9 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "pokemons datasets"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
@@ -28,5 +31,6 @@
 				"type": "String"
 			}
 		]
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

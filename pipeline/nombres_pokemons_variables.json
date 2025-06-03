@@ -79,6 +79,8 @@
 		"folder": {
 			"name": "pokemon_ejercicio"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2025-05-31T18:40:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
