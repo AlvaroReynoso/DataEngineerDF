@@ -591,14 +591,7 @@
 					{
 						"name": "lookup_products",
 						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "copydata_sql_to_csv",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -619,13 +612,20 @@
 								"type": "DatasetReference",
 								"parameters": {}
 							},
-							"firstRowOnly": false
+							"firstRowOnly": true
 						}
 					},
 					{
 						"name": "copydata_sql_to_csv",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "lookup_products",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -652,6 +652,179 @@
 								}
 							},
 							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_SQL_products_insert",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "products_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "sp_register_log",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "copydata_sql_to_csv",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_LogExport]",
+							"storedProcedureParameters": {
+								"comment": {
+									"value": "\"Exportación SQL a CSV completada\"",
+									"type": "String"
+								},
+								"records_exported": {
+									"value": {
+										"value": "@activity('copydata_sql_to_csv').output.rowsCopied",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"status": {
+									"value": "\"Exito\"",
+									"type": "String"
+								},
+								"table_name": {
+									"value": "\"products\"",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS__SQL_SalesDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "PL_ejercicio_products"
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-06-03T23:52:19Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_product_query_count')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_products_insert')]",
+				"[concat(variables('factoryId'), '/datasets/products_csv')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS__SQL_SalesDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/lookup_copy_IfStatement_PL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "query_count",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT COUNT(*) AS total_productos FROM dbo.products",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_product_query",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": true
+						}
+					},
+					{
+						"name": "COPY_SQL_to_ADLS",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "query_count",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage1",
+										"type": "LinkedServiceReference"
+									}
+								}
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -701,7 +874,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_SQL_products_insert",
+								"referenceName": "productsDATASET",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -713,21 +886,86 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "COPY_SQL_to_ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('Copy_SQL_to_ADLS').output.rowsCopied, activity('query_count').output.firstRow.total_productos)\n\n",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Set variable2",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "resultado_mensaje_fallo",
+										"value": "fallo"
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "resultado_mensaje_correcto",
+										"value": [
+											"correcto"
+										]
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"variables": {
+					"resultado_,mensaje": {
+						"type": "Array"
+					},
+					"resultado_mensaje_correcto": {
+						"type": "Array"
+					},
+					"resultado_mensaje_fallo": {
+						"type": "String"
+					}
+				},
 				"folder": {
-					"name": "PL_ejercicio_products"
+					"name": "PL_ejercicio_sales_products"
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-06-03T23:01:54Z"
+				"lastPublishTime": "2025-06-05T07:06:29Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_product_query_count')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SQL_products_insert')]",
-				"[concat(variables('factoryId'), '/datasets/products_csv')]"
+				"[concat(variables('factoryId'), '/datasets/DS_product_query')]",
+				"[concat(variables('factoryId'), '/datasets/productsDATASET')]",
+				"[concat(variables('factoryId'), '/datasets/products_csv')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
@@ -1505,6 +1743,44 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_product_query')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS__SQL_SalesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DS_list_of_products"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS__SQL_SalesDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Pokemon_10')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2063,6 +2339,44 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/productsDATASET')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS__SQL_SalesDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DS_list_of_products"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "nombre",
+						"type": "varchar"
+					},
+					{
+						"name": "descripcion",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS__SQL_SalesDB')]"
 			]
 		},
 		{
