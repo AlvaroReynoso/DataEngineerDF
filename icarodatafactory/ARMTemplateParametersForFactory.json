@@ -8,7 +8,16 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
 		"LS__SQL_SalesDB_password": {
+			"value": ""
+		},
+		"LS_databricks_accessToken": {
+			"value": ""
+		},
+		"RestService2_password": {
 			"value": ""
 		},
 		"clase5_ejemplo_password": {
@@ -16,6 +25,9 @@
 		},
 		"sql_dataset_look_up_password": {
 			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://myicaroworkspace.dfs.core.windows.net/"
 		},
 		"LS__SQL_SalesDB_properties_typeProperties_server": {
 			"value": "mi-servidor-sql-bocha.database.windows.net"
@@ -28,6 +40,12 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://pokeapi.co/api/v2/"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"value": "https://api.bcra.gob.ar/centraldeudores/v1.0/Deudas/ChequesRechazados"
+		},
+		"RestService2_properties_typeProperties_userName": {
+			"value": "usuarioazure"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"value": "mi-servidor-sql-bocha.database.windows.net"

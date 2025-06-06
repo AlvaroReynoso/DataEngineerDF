@@ -11,9 +11,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
 		"LS__SQL_SalesDB_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS__SQL_SalesDB'"
+		},
+		"LS_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_databricks'"
+		},
+		"RestService2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RestService2'"
 		},
 		"clase5_ejemplo_password": {
 			"type": "secureString",
@@ -22,6 +34,10 @@
 		"sql_dataset_look_up_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'sql_dataset_look_up'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://myicaroworkspace.dfs.core.windows.net/"
 		},
 		"LS__SQL_SalesDB_properties_typeProperties_server": {
 			"type": "string",
@@ -38,6 +54,14 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pokeapi.co/api/v2/"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.bcra.gob.ar/centraldeudores/v1.0/Deudas/ChequesRechazados"
+		},
+		"RestService2_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"type": "string",
@@ -101,14 +125,26 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
 					"LS__SQL_SalesDB_password": {
 						"value": "[parameters('LS__SQL_SalesDB_password')]"
+					},
+					"LS_databricks_accessToken": {
+						"value": "[parameters('LS_databricks_accessToken')]"
+					},
+					"RestService2_password": {
+						"value": "[parameters('RestService2_password')]"
 					},
 					"clase5_ejemplo_password": {
 						"value": "[parameters('clase5_ejemplo_password')]"
 					},
 					"sql_dataset_look_up_password": {
 						"value": "[parameters('sql_dataset_look_up_password')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
 					},
 					"LS__SQL_SalesDB_properties_typeProperties_server": {
 						"value": "[parameters('LS__SQL_SalesDB_properties_typeProperties_server')]"
@@ -121,6 +157,12 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"RestService2_properties_typeProperties_url": {
+						"value": "[parameters('RestService2_properties_typeProperties_url')]"
+					},
+					"RestService2_properties_typeProperties_userName": {
+						"value": "[parameters('RestService2_properties_typeProperties_userName')]"
 					},
 					"clase5_ejemplo_properties_typeProperties_server": {
 						"value": "[parameters('clase5_ejemplo_properties_typeProperties_server')]"

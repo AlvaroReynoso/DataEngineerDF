@@ -11,9 +11,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
 		"LS__SQL_SalesDB_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS__SQL_SalesDB'"
+		},
+		"LS_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_databricks'"
+		},
+		"RestService2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RestService2'"
 		},
 		"clase5_ejemplo_password": {
 			"type": "secureString",
@@ -22,6 +34,10 @@
 		"sql_dataset_look_up_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'sql_dataset_look_up'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://myicaroworkspace.dfs.core.windows.net/"
 		},
 		"LS__SQL_SalesDB_properties_typeProperties_server": {
 			"type": "string",
@@ -38,6 +54,14 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pokeapi.co/api/v2/"
+		},
+		"RestService2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.bcra.gob.ar/centraldeudores/v1.0/Deudas/ChequesRechazados"
+		},
+		"RestService2_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "usuarioazure"
 		},
 		"clase5_ejemplo_properties_typeProperties_server": {
 			"type": "string",
@@ -201,6 +225,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LS__SQL_SalesDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -223,6 +264,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS_databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-2350102757370114.14.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_databricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_E4d_v4",
+					"newClusterNumOfWorker": "1",
+					"newClusterVersion": "16.4.x-cpu-ml-photon-scala2.13",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RestService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -234,6 +297,26 @@
 					"url": "[parameters('RestService1_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestService2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestService2_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('RestService2_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('RestService2_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -493,6 +576,188 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "TasasDeInteres",
+						"fileSystem": "tasasinteres"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "indice_tiempo",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_cajas_ahorro",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_plazo_fijo_30_59_dias",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_plazo_fijo_mas_60_dias",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_call",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_prime",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_adelantos_cc",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_badlar",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_pases_pesos_pasivos_1_dia",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_pases_pesos_pasivos_7_dias",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_pases_pesos_activos_1_dias",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_pases_pesos_activos_7_dias",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_tasa_politica_monetaria",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_1_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_2_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_3_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_4_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_5_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_6_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_7_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_8_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_9_m",
+						"type": "String"
+					},
+					{
+						"name": "instr_bcra_lebac_pesos_10_m",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_adelantos",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_documentos",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_hipotecarios",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_prendarios",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_personales",
+						"type": "String"
+					},
+					{
+						"name": "tasas_interes_activas_tarjetas",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "lookup_pokemons",
+						"container": "pokemons"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "url",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Pokemon_10')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -586,208 +851,6 @@
 						}
 					}
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/charizard_copydata_From_JSON')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "pokemons datasets"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "CSV_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/charizard_get')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "RestService1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": "/pokemon/charizard"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/RestService1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv_pokemons')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "pokemons datasets"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "lookup_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "url",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv_tabla_poke_10')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "pokemons datasets"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "CSV_pokemons",
-						"container": "pokemons"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ejercicio_bikes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "ejercicioBikes"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "bikes.csv",
-						"container": "users"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "web-scraper-order",
-						"type": "String"
-					},
-					{
-						"name": "web-scraper-start-url",
-						"type": "String"
-					},
-					{
-						"name": "Links",
-						"type": "String"
-					},
-					{
-						"name": "Links-href",
-						"type": "String"
-					},
-					{
-						"name": "Name",
-						"type": "String"
-					},
-					{
-						"name": "Engine",
-						"type": "String"
-					},
-					{
-						"name": "Mileage",
-						"type": "String"
-					},
-					{
-						"name": "Transmission",
-						"type": "String"
-					},
-					{
-						"name": "Weight",
-						"type": "String"
-					},
-					{
-						"name": "Fuel Tank Capacity",
-						"type": "String"
-					},
-					{
-						"name": "Seat Height",
-						"type": "String"
-					},
-					{
-						"name": "Price",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
