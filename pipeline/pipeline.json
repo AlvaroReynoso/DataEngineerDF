@@ -196,9 +196,6 @@
 			},
 			"anio": {
 				"type": "string"
-			},
-			"mes1": {
-				"type": "string"
 			}
 		},
 		"variables": {
