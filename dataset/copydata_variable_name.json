@@ -1,20 +1,25 @@
 {
-	"name": "pokemons_10_csv",
+	"name": "copydata_variable_name",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "pokemons datasets"
+		"parameters": {
+			"nombreFecha": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "CSV_10_Pokemons",
-				"folderPath": "CSV_pokemons",
+				"fileName": {
+					"value": "@dataset().nombreFecha",
+					"type": "Expression"
+				},
+				"folderPath": "lookup_pokemons",
 				"container": "pokemons"
 			},
 			"columnDelimiter": ",",
